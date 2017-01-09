@@ -39,12 +39,27 @@ app.post('/webhook/', function (req, res) {
         let event = req.body.entry[0].messaging[i];
         let sender = event.sender.id;
         if (event.message && event.message.text) {
-            let text = event.message.text;
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+            let messageText = event.message.text;
+
+
+            sendTextMessage(sender, getResponseText(messageText.substring(0, 200)));
         }
     }
     res.sendStatus(200)
 });
+
+
+function getResponseText(messageText) {
+
+    if (messageText.indexOf("car") != -1) {
+        return "Are you looking for help with car insurance?"
+    }
+    else if(messageText.indexOf("house" != -1)) {
+        return "Are you looking for help with homeowners insurance?"
+    }else {
+        return messageText
+    }
+}
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text };
