@@ -54,7 +54,7 @@ function getResponseText(messageText) {
     if (messageText.indexOf("car") != -1) {
         return "Are you looking for help with car insurance?"
     }
-    else if(messageText.indexOf("house" != -1)) {
+    else if(messageText.indexOf("house") != -1) {
         return "Are you looking for help with homeowners insurance?"
     }else {
         return messageText
