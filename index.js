@@ -45,7 +45,10 @@ app.post('/webhook/', function (req, res) {
 
             let messageText = event.message.text;
 
-            sendTextMessage(sender, messageText.substring(0, 200));
+
+            getUserDetails(sender);
+
+            // sendTextMessage(sender, messageText.substring(0, 200));
         }
     }
     res.sendStatus(200)
