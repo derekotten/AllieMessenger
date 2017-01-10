@@ -84,7 +84,7 @@ function getResponseText(sender, messageText) {
         return "Are you looking for help with homeowners insurance?"
     }
     else if (messageText.indexOf("hello") != -1) {
-        return getUserDetails(sender);
+        return "hello";
     }
     else {
         return messageText
@@ -98,19 +98,22 @@ function getUserDetails(sender) {
 
         console.log(rBody.first_name);
 
-       request.post({url: sendMessageUrl,
-                    qs: {access_token: token},
-                    json: {
-                        recipient: {id: sender},
-                        message: rBody.first_name
-                    }},
-                    function (error, response, body) {
-                        if (error) {
-                            console.log('Error SENDING RETURN MESSAGE: ', error)
-                        } else if (response.body.error) {
-                            console.log('Error SENDING RET MESG: ', response.body.error)
-                        }
-                    });
+
+        sendTextMessage(sender, 'hello');
+
+       // request.post({url: sendMessageUrl,
+       //              qs: {access_token: token},
+       //              json: {
+       //                  recipient: {id: sender},
+       //                  message: rBody.first_name
+       //              }},
+       //              function (error, response, body) {
+       //                  if (error) {
+       //                      console.log('Error SENDING RETURN MESSAGE: ', error)
+       //                  } else if (response.body.error) {
+       //                      console.log('Error SENDING RET MESG: ', response.body.error)
+       //                  }
+       //              });
     });
 
     //
