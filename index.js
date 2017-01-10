@@ -99,7 +99,7 @@ function getUserDetails(sender) {
         console.log(rBody.first_name);
 
 
-        sendTextMessage(sender, 'hello');
+        sendTextMessage(sender, rBody.first_name.toString());
 
        // request.post({url: sendMessageUrl,
        //              qs: {access_token: token},
