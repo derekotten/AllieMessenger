@@ -62,6 +62,8 @@ function sendTextMessage(sender, text) {
             message: messageData
         }
     }, function (error, response, body) {
+        console.log("SENDER_ID>>>>>>>>>>" + sender);
+
         if (error) {
             console.log('Error sending messages: ', error)
         } else if (response.body.error) {
