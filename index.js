@@ -99,6 +99,11 @@ function getUserDetails(sender) {
             method: 'GET'
         },
         function (error, response, body) {
+            console.log('RESPONSE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response);
+            console.log('BODY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + body);
+            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response.body.first_name);
+            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + body.first_name);
+
             if (error) {
                 console.log('Error getting user info: ', error)
             } else if (response.body.error) {
