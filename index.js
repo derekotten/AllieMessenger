@@ -81,7 +81,7 @@ function getResponseText(sender, messageText) {
         return "Are you looking for help with homeowners insurance?"
     }
     else if (messageText.indexOf("hello") != -1) {
-        return "Hello " + getUserDetails(sender);
+        return getUserDetails(sender);
     }
     else {
         return messageText
@@ -107,8 +107,8 @@ function getUserDetails(sender) {
                 console.log('Error: ', response.body.error)
             }
             else {
-                console.log('got here');
-                return realBody.first_name.toString();
+                console.log(realBody.first_name);
+                return realBody.first_name;
             }
         })
 }
