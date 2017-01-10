@@ -45,9 +45,7 @@ app.post('/webhook/', function (req, res) {
 
             let messageText = event.message.text;
 
-
-            getUserDetails(sender);
-
+            getResponseText(sender, messageText);
             // sendTextMessage(sender, messageText.substring(0, 200));
         }
     }
@@ -55,7 +53,7 @@ app.post('/webhook/', function (req, res) {
 });
 
 function sendTextMessage(sender, text) {
-    let messageData = {text: getResponseText(sender, text)};
+    let messageData = {text: text};
     request({
         url: sendMessageUrl,
         qs: {access_token: token},
@@ -65,8 +63,6 @@ function sendTextMessage(sender, text) {
             message: messageData
         }
     }, function (error, response, body) {
-        console.log("SENDER_ID>>>>>>>>>>" + sender);
-
         if (error) {
             console.log('Error sending messages: ', error)
         } else if (response.body.error) {
@@ -78,16 +74,16 @@ function sendTextMessage(sender, text) {
 function getResponseText(sender, messageText) {
 
     if (messageText.indexOf("car") != -1) {
-        return "Are you looking for help with car insurance?"
+        sendTextMessage(sender, "Are you looking for help with car insurance?")
     }
     else if (messageText.indexOf("house") != -1) {
-        return "Are you looking for help with homeowners insurance?"
+        sendTextMessage(sender, "Are you looking for help with homeowners insurance?")
     }
     else if (messageText.indexOf("hello") != -1) {
-        return "hello";
+        getUserDetails(sender)
     }
     else {
-        return messageText
+        sendTextMessage(sender, messageText)
     }
 }
 
@@ -98,46 +94,9 @@ function getUserDetails(sender) {
 
         console.log(rBody.first_name);
 
-
         sendTextMessage(sender, rBody.first_name.toString());
 
-       // request.post({url: sendMessageUrl,
-       //              qs: {access_token: token},
-       //              json: {
-       //                  recipient: {id: sender},
-       //                  message: rBody.first_name
-       //              }},
-       //              function (error, response, body) {
-       //                  if (error) {
-       //                      console.log('Error SENDING RETURN MESSAGE: ', error)
-       //                  } else if (response.body.error) {
-       //                      console.log('Error SENDING RET MESG: ', response.body.error)
-       //                  }
-       //              });
     });
-
-    //
-    // request({
-    //         url: getUserInfoUrl + sender,
-    //         qs: {
-    //             access_token: token,
-    //             fields: 'first_name,last_name'
-    //         },
-    //         method: 'GET'
-    //     },
-    //     function (error, response, body) {
-    //         var realBody = JSON.parse(body);
-    //
-    //         if (error) {
-    //             console.log('Error getting user info: ', error)
-    //         } else if (response.body.error) {
-    //             console.log('Error: ', response.body.error)
-    //         }
-    //         else {
-    //             console.log(realBody.first_name);
-    //             return realBody.first_name;
-    //         }
-    //     })
 }
 
 function sendTypingAction(sender) {
