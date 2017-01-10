@@ -103,7 +103,14 @@ function getUserDetails(sender) {
                     json: {
                         recipient: {id: sender},
                         message: rBody.first_name
-                    }});
+                    }},
+                    function (error, response, body) {
+                        if (error) {
+                            console.log('Error SENDING RETURN MESSAGE: ', error)
+                        } else if (response.body.error) {
+                            console.log('Error SENDING RET MESG: ', response.body.error)
+                        }
+                    });
     });
 
     //
