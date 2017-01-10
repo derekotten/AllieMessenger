@@ -99,10 +99,15 @@ function getUserDetails(sender) {
             method: 'GET'
         },
         function (error, response, body) {
+            var realBody = JSON.parse(body);
+
+
             console.log('RESPONSE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response);
             console.log('BODY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + body);
             console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response.body.first_name);
-            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + body.first_name);
+            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody.first_name);
+            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody.last_name);
+            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody);
 
             if (error) {
                 console.log('Error getting user info: ', error)
@@ -110,7 +115,7 @@ function getUserDetails(sender) {
                 console.log('Error: ', response.body.error)
             }
             else {
-                return body.first_name + ' ' + body.last_name;
+                return realBody.first_name + ' ' + realBody.last_name;
             }
         })
 }
