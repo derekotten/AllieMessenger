@@ -90,8 +90,8 @@ function getResponseText(sender, messageText) {
 
 
 function getUserDetails(sender) {
-    request.get(getUserInfoUrl + sender).on('response', function(response) {
-        var rBody = JSON.parse(response.body);
+    request.get(getUserInfoUrl + sender).on('data', function(data) {
+        var rBody = JSON.parse(data.body);
 
         console.log(rBody.first_name);
 
