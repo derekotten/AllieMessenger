@@ -45,8 +45,7 @@ app.post('/webhook/', function (req, res) {
 
             let messageText = event.message.text;
 
-            getResponseText(sender, messageText);
-            // sendTextMessage(sender, messageText.substring(0, 200));
+            sendResponseText(sender, messageText);
         }
     }
     res.sendStatus(200)
@@ -71,7 +70,7 @@ function sendTextMessage(sender, text) {
     })
 }
 
-function getResponseText(sender, messageText) {
+function sendResponseText(sender, messageText) {
 
     if (messageText.indexOf("car") != -1) {
         sendTextMessage(sender, "Are you looking for help with car insurance?")
@@ -92,10 +91,7 @@ function getUserDetails(sender) {
     request.get(getUserInfoUrl + sender + '?fields?=first_name&access_token=' + token).on('data', function(data) {
         var rBody = JSON.parse(data);
 
-        console.log(rBody.first_name);
-
-        sendTextMessage(sender, rBody.first_name.toString());
-
+        sendTextMessage(sender, "Hello, " + rBody.first_name.toString());
     });
 }
 
