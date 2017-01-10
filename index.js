@@ -94,7 +94,7 @@ function getUserDetails(sender) {
             url: getUserInfoUrl + sender,
             qs: {
                 access_token: token,
-                fields: ['first_name', 'last_name']
+                fields: 'first_name,last_name'
             },
             method: 'GET'
         },
