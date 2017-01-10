@@ -101,21 +101,14 @@ function getUserDetails(sender) {
         function (error, response, body) {
             var realBody = JSON.parse(body);
 
-
-            console.log('RESPONSE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response);
-            console.log('BODY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + body);
-            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + response.body.first_name);
-            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody.first_name);
-            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody.last_name);
-            console.log('FIRSTNAME? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' + realBody);
-
             if (error) {
                 console.log('Error getting user info: ', error)
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error)
             }
             else {
-                return realBody.first_name + ' ' + realBody.last_name;
+                console.log('got here');
+                return realBody.first_name.toString();
             }
         })
 }
