@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
+const sendMessageUrl = 'https://graph.facebook.com/v2.6/me/messages';
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -39,6 +40,8 @@ app.post('/webhook/', function (req, res) {
         let event = req.body.entry[0].messaging[i];
         let sender = event.sender.id;
         if (event.message && event.message.text) {
+            sendTypingAction(sender);
+
             let messageText = event.message.text;
 
 
@@ -61,10 +64,30 @@ function getResponseText(messageText) {
     }
 }
 
+
+function sendTypingAction(sender) {
+    request({
+        url: sendMessageUrl,
+        qs: {access_token: token},
+        method: 'POST',
+        json: {
+            recipient: {id: sender},
+            sender_action: 'typing_on'
+        }
+    },
+    function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
 function sendTextMessage(sender, text) {
     let messageData = { text:text };
     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
+        url: sendMessageUrl,
         qs: {access_token:token},
         method: 'POST',
         json: {
