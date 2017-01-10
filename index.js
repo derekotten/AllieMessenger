@@ -90,27 +90,41 @@ function getResponseText(sender, messageText) {
 
 
 function getUserDetails(sender) {
-    request({
-            url: getUserInfoUrl + sender,
-            qs: {
-                access_token: token,
-                fields: 'first_name,last_name'
-            },
-            method: 'GET'
-        },
-        function (error, response, body) {
-            var realBody = JSON.parse(body);
+    request.get(getUserInfoUrl + sender).on('response', function(response) {
+        var rBody = JSON.parse(response.body);
 
-            if (error) {
-                console.log('Error getting user info: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
-            }
-            else {
-                console.log(realBody.first_name);
-                return realBody.first_name;
-            }
-        })
+        console.log(rBody.first_name);
+
+       request.post({url: sendMessageUrl,
+                    qs: {access_token: token},
+                    json: {
+                        recipient: {id: sender},
+                        message: rBody.first_name
+                    }});
+    });
+
+    //
+    // request({
+    //         url: getUserInfoUrl + sender,
+    //         qs: {
+    //             access_token: token,
+    //             fields: 'first_name,last_name'
+    //         },
+    //         method: 'GET'
+    //     },
+    //     function (error, response, body) {
+    //         var realBody = JSON.parse(body);
+    //
+    //         if (error) {
+    //             console.log('Error getting user info: ', error)
+    //         } else if (response.body.error) {
+    //             console.log('Error: ', response.body.error)
+    //         }
+    //         else {
+    //             console.log(realBody.first_name);
+    //             return realBody.first_name;
+    //         }
+    //     })
 }
 
 function sendTypingAction(sender) {
