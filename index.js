@@ -93,7 +93,7 @@ function getResponseText(sender, messageText) {
 
 
 function getUserDetails(sender) {
-    request.get(getUserInfoUrl + sender).on('data', function(data) {
+    request.get(getUserInfoUrl + sender + '?fields?=first_name&access_token=' + token).on('data', function(data) {
         var rBody = JSON.parse(data);
 
         console.log(rBody.first_name);
