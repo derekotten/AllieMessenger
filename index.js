@@ -47,9 +47,68 @@ app.post('/webhook/', function (req, res) {
 
             sendResponseText(sender, messageText);
         }
+        else if (event.message && event.message.attachments) {
+            console.log(event.message.attachments[0].payload.coordinates);
+            console.log(event.message.attachments[0].payload.coordinates.lat);
+            console.log(event.message.attachments[0].payload.coordinates.long);
+        }
     }
     res.sendStatus(200)
 });
+
+function sendResponseText(sender, messageText) {
+
+    if (messageText.indexOf("car") != -1) {
+        sendTextMessage(sender, "Are you looking for help with car insurance?")
+    }
+    else if (messageText.indexOf("house") != -1) {
+        sendTextMessage(sender, "Are you looking for help with homeowners insurance?")
+    }
+    else if (messageText.indexOf("hello") != -1) {
+        getUserDetails(sender)
+    }
+    else if (messageText.indexOf("roadside assistance") != -1) {
+        sendGpsRequest(sender);
+    }
+    else {
+        sendTextMessage(sender, messageText)
+    }
+}
+
+function getUserDetails(sender) {
+    request.get(getUserInfoUrl + sender + '?fields?=first_name&access_token=' + token).on('data', function(data) {
+        var rBody = JSON.parse(data);
+
+        sendTextMessage(sender, "Hello, " + rBody.first_name.toString());
+    });
+}
+
+function sendGpsRequest(sender) {
+    let messageText = "Please share your location:";
+
+    request({
+        url: sendMessageUrl,
+        qs: {access_token: token},
+        method: 'POST',
+        json: {
+            recipient: {id: sender},
+            message: {
+                text: messageText,
+                quick_replies: [
+                    {
+                        content_type: "location"
+                    }
+                ]
+            }
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
 
 function sendTextMessage(sender, text) {
     let messageData = {text: text};
@@ -68,31 +127,6 @@ function sendTextMessage(sender, text) {
             console.log('Error: ', response.body.error)
         }
     })
-}
-
-function sendResponseText(sender, messageText) {
-
-    if (messageText.indexOf("car") != -1) {
-        sendTextMessage(sender, "Are you looking for help with car insurance?")
-    }
-    else if (messageText.indexOf("house") != -1) {
-        sendTextMessage(sender, "Are you looking for help with homeowners insurance?")
-    }
-    else if (messageText.indexOf("hello") != -1) {
-        getUserDetails(sender)
-    }
-    else {
-        sendTextMessage(sender, messageText)
-    }
-}
-
-
-function getUserDetails(sender) {
-    request.get(getUserInfoUrl + sender + '?fields?=first_name&access_token=' + token).on('data', function(data) {
-        var rBody = JSON.parse(data);
-
-        sendTextMessage(sender, "Hello, " + rBody.first_name.toString());
-    });
 }
 
 function sendTypingAction(sender) {
